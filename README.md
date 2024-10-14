@@ -70,12 +70,10 @@ Before you begin, ensure you have met the following requirements:
 This application follows the SOLID design principles, which promote best practices in object-oriented programming and enhance code maintainability, flexibility, and readability.
 
 - **Single Responsibility Principle (SRP):** 
-- Each class in the application has a single responsibility. For example, the BankAccount class manages account details, while the TransactionService handles transaction operations. 
-- This separation ensures that changes in one area do not affect others.
+- Each class in the application has a single responsibility. For example, the BankAccount class manages account details, while the TransactionService handles transaction operations.
 
 - **Open/Closed Principle (OCP):** 
 - The application is designed to be open for extension but closed for modification. New transaction types can be added through inheritance without altering existing code. 
-- This allows the application to grow without impacting its stability.
 
 - **Liskov Substitution Principle (LSP):**
 - Subtypes can be used interchangeably with their base types without affecting the functionality of the application. 
@@ -89,13 +87,13 @@ This application follows the SOLID design principles, which promote best practic
 - The application relies on abstractions rather than concrete implementations. This allows for easier testing and flexibility, as different implementations can be substituted without modifying the service code.
 
 By adhering to these SOLID principles, the application is more robust, easier to maintain, and adaptable to future changes.
-## 6. Dependencies
+## 7. Dependencies
 
 - Keep your dependencies up to date.
 - Avoid using deprecated libraries or methods.
 - Use Gradle's `runtimeOnly` configuration to include libraries that are needed only at runtime and not during compile-time.
 
-## 7. Database
+## 8. Database
 
 - **Naming:**
     - Use `transactions` for table and column names.
@@ -109,10 +107,10 @@ By adhering to these SOLID principles, the application is more robust, easier to
     - especially in scenarios where multiple related entities are loaded separately. 
     - Consider using eager loading or fetching strategies to optimize data retrieval.)
 
-## 8. Unit Testing
-      
-    The application uses JUnit 5 and Mockito for writing and executing unit tests. The unit tests are written to verify 
-    the functionality of various service layers, ensuring that methods behave as expected under different scenarios.
+## 9. Unit Testing
+
+The application uses JUnit 5 and Mockito for writing and executing unit tests. The unit tests are written to verify 
+the functionality of various service layers, ensuring that methods behave as expected under different scenarios.
 
 - **Testing Frameworks Used:**
   - JUnit 5: The primary testing framework used to write and run unit tests.
