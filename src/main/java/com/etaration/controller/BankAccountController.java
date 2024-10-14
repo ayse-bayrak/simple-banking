@@ -21,7 +21,6 @@ import java.time.LocalDateTime;
 @RequestMapping("/account/v1")
 public class BankAccountController {
 
-
     private final BankAccountService bankAccountService;
     private final TransactionService transactionService;
     private final MapperUtil mapperUtil;

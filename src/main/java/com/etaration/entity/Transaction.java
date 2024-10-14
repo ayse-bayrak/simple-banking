@@ -41,7 +41,6 @@ public abstract class Transaction extends BaseEntity {
         this.date = LocalDateTime.now();
     }
 
-    // This method returns the transaction type as a string
     public String getType() {
         return this.getClass().getSimpleName();
     }

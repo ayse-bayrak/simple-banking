@@ -6,8 +6,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import javax.management.relation.RoleNotFoundException;
-
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
