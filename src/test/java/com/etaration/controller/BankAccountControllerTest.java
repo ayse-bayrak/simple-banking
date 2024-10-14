@@ -1,6 +1,5 @@
-package com.etaration;
+package com.etaration.controller;
 
-import com.etaration.controller.BankAccountController;
 import com.etaration.dto.AccountResponse;
 import com.etaration.dto.TransactionDTO;
 import com.etaration.dto.TransactionRequest;
