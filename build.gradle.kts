@@ -31,6 +31,9 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    implementation ("org.slf4j:slf4j-api:2.0.5")
+    implementation ("ch.qos.logback:logback-classic:1.4.5")
+    implementation ("org.modelmapper:modelmapper:3.1.0")
 }
 
 tasks.withType<Test> {

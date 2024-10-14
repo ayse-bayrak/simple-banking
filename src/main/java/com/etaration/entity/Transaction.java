@@ -29,9 +29,11 @@ public abstract class Transaction extends BaseEntity {
 
     private double amount;
     private LocalDateTime transactionDate;
+    private String type;
+    private String approvalCode;
 
     @ManyToOne
-    @JoinColumn(name = "account_id")
+    @JoinColumn(name = "account_number")
     private BankAccount bankAccount;
 
     public Transaction(double amount) {
@@ -40,5 +42,10 @@ public abstract class Transaction extends BaseEntity {
     }
 
     public abstract void apply(BankAccount account);
+
+    // This method returns the transaction type as a string
+    public String getType() {
+        return this.getClass().getSimpleName();
+    }
 
 }
