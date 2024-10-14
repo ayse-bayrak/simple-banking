@@ -5,6 +5,7 @@ import com.etaration.dto.TransactionDTO;
 import com.etaration.dto.TransactionRequest;
 import com.etaration.dto.wrapper.ResponseWrapper;
 import com.etaration.entity.DepositTransaction;
+import com.etaration.entity.PhoneBillPaymentTransaction;
 import com.etaration.entity.WithdrawalTransaction;
 import com.etaration.service.BankAccountService;
 import com.etaration.service.TransactionService;
@@ -38,7 +39,6 @@ public class BankAccountController {
         TransactionDTO transactionDTO = TransactionDTO.builder()
                 .date(LocalDateTime.now())
                 .amount(request.getAmount())
-                .status("OK")
                 .type("DepositTransaction")
                 .approvalCode(approvalCode)
                 .build();
@@ -62,7 +62,6 @@ public class BankAccountController {
         TransactionDTO transactionDTO = TransactionDTO.builder()
                 .date(LocalDateTime.now())
                 .amount(request.getAmount())
-                .status("OK")
                 .type("WithdrawalTransaction")
                 .approvalCode(approvalCode)
                 .build();
@@ -74,6 +73,32 @@ public class BankAccountController {
                 .success(true)
                 .statusCode(HttpStatus.OK)
                 .message("Debit transaction successful")
+                .data(transactionDTO)
+                .build();
+
+        return new ResponseEntity<>(responseWrapper, HttpStatus.OK);
+    }
+
+    @PostMapping("/phoneBill/{accountNumber}/{provider}/{phoneNumber}")
+    public ResponseEntity<ResponseWrapper> phoneBillPayment(@PathVariable String accountNumber,
+                                                            @PathVariable String provider,
+                                                            @PathVariable String phoneNumber,
+                                                            @RequestBody TransactionRequest request) {
+        String approvalCode = bankAccountService.phoneBillPayment(accountNumber, provider, phoneNumber, request.getAmount());
+
+        TransactionDTO transactionDTO = TransactionDTO.builder()
+                .date(LocalDateTime.now())
+                .amount(request.getAmount())
+                .type("PhoneBillPaymentTransaction")
+                .approvalCode(approvalCode)
+                .build();
+        PhoneBillPaymentTransaction phoneBillPaymentTransaction = mapperUtil.convert(transactionDTO, new PhoneBillPaymentTransaction());
+        transactionService.save(phoneBillPaymentTransaction);
+
+        ResponseWrapper responseWrapper = ResponseWrapper.builder()
+                .success(true)
+                .statusCode(HttpStatus.OK)
+                .message("Phone Bill Payment Transaction successful")
                 .data(transactionDTO)
                 .build();
 

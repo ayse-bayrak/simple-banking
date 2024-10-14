@@ -5,8 +5,10 @@ import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
+@ToString
 @Setter
 @NoArgsConstructor
 @Entity
@@ -17,9 +19,4 @@ public class DepositTransaction extends Transaction {
         super(amount);
     }
 
-    @Override
-    public void apply(BankAccount account) {
-        account.setBalance(account.getBalance() + this.getAmount());
-    }
 }
-

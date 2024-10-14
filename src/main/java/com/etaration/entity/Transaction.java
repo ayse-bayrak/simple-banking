@@ -31,20 +31,15 @@ public abstract class Transaction extends BaseEntity {
     private LocalDateTime date;
     private String type;
     private String approvalCode;
-    private String status;
 
     @ManyToOne
     @JoinColumn(name = "account_number")
     private BankAccount bankAccount;
 
-    private String bankAccountNumber;
-
     public Transaction(double amount) {
         this.amount = amount;
         this.date = LocalDateTime.now();
     }
-
-    public abstract void apply(BankAccount account);
 
     // This method returns the transaction type as a string
     public String getType() {

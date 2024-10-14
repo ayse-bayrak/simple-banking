@@ -14,6 +14,5 @@ public class TransactionDTO {
     private double amount;
     private String type;
     private String approvalCode;
-    private String status;
 
 }
