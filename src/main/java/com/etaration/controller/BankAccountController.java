@@ -1,13 +1,19 @@
 package com.etaration.controller;
 
-import com.etaration.model.BankAccount;
+import com.etaration.dto.AccountResponse;
+import com.etaration.dto.TransactionDTO;
+import com.etaration.dto.TransactionRequest;
+import com.etaration.dto.wrapper.ResponseWrapper;
 import com.etaration.service.BankAccountService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/account/v1")
 public class BankAccountController {
+
 
     private final BankAccountService bankAccountService;
 
@@ -16,20 +22,55 @@ public class BankAccountController {
     }
 
     @PostMapping("/credit/{accountNumber}")
-    public ResponseEntity<String> credit(@PathVariable String accountNumber, @RequestBody TransactionRequest request) {
-        String approvalCode = bankAccountService.credit(accountNumber, request.getAmount());
-        return ResponseEntity.ok("{\"status\": \"OK\", \"approvalCode\": \"" + approvalCode + "\"}");
+    public ResponseEntity<ResponseWrapper> creditAccount(@PathVariable String accountNumber, @RequestBody TransactionRequest request) {
+      String approvalCode = bankAccountService.credit(accountNumber, request.getAmount());
+
+        TransactionDTO transactionDTO = TransactionDTO.builder()
+                .status("OK")
+                .approvalCode(approvalCode)
+                .build();
+
+        ResponseWrapper responseWrapper = ResponseWrapper.builder()
+                .success(true)
+                .statusCode(HttpStatus.OK)
+                .message("Credit transaction successful")
+                .data(transactionDTO)
+                .build();
+
+        return new ResponseEntity<>(responseWrapper, HttpStatus.OK);
     }
 
     @PostMapping("/debit/{accountNumber}")
-    public ResponseEntity<String> debit(@PathVariable String accountNumber, @RequestBody TransactionRequest request) {
+    public ResponseEntity<ResponseWrapper> debitAccount(@PathVariable String accountNumber, @RequestBody TransactionRequest request) {
         String approvalCode = bankAccountService.debit(accountNumber, request.getAmount());
-        return ResponseEntity.ok("{\"status\": \"OK\", \"approvalCode\": \"" + approvalCode + "\"}");
+
+        TransactionDTO transactionDTO = TransactionDTO.builder()
+                .status("OK")
+                .approvalCode(approvalCode)
+                .build();
+
+        ResponseWrapper responseWrapper = ResponseWrapper.builder()
+                .success(true)
+                .statusCode(HttpStatus.OK)
+                .message("Debit transaction successful")
+                .data(transactionDTO)
+                .build();
+
+        return new ResponseEntity<>(responseWrapper, HttpStatus.OK);
     }
 
     @GetMapping("/{accountNumber}")
-    public ResponseEntity<BankAccount> getAccount(@PathVariable String accountNumber) {
-        BankAccount account = bankAccountService.getAccount(accountNumber);
-        return ResponseEntity.ok(account);
+    public ResponseEntity<ResponseWrapper> getAccountDetails(@PathVariable String accountNumber) {
+        AccountResponse accountResponse = bankAccountService.getAccountDetails(accountNumber);
+
+        ResponseWrapper responseWrapper = ResponseWrapper.builder()
+                .success(true)
+                .statusCode(HttpStatus.OK)
+                .message("Account details retrieved successfully")
+                .data(accountResponse)
+                .build();
+
+        return new ResponseEntity<>(responseWrapper, HttpStatus.OK);
     }
+
 }
