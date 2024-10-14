@@ -28,17 +28,20 @@ import java.time.LocalDateTime;
 public abstract class Transaction extends BaseEntity {
 
     private double amount;
-    private LocalDateTime transactionDate;
+    private LocalDateTime date;
     private String type;
     private String approvalCode;
+    private String status;
 
     @ManyToOne
     @JoinColumn(name = "account_number")
     private BankAccount bankAccount;
 
+    private String bankAccountNumber;
+
     public Transaction(double amount) {
         this.amount = amount;
-        this.transactionDate = LocalDateTime.now();
+        this.date = LocalDateTime.now();
     }
 
     public abstract void apply(BankAccount account);

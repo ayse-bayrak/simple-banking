@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -22,7 +21,6 @@ public class PhoneBillPaymentTransaction extends Transaction {
         super(amount);  // Call to the parent Transaction constructor
         this.provider = provider;
         this.phoneNumber = phoneNumber;
-        this.setTransactionDate(LocalDateTime.now());  // Automatically set the date to the current time
     }
 
     @Override
@@ -40,7 +38,7 @@ public class PhoneBillPaymentTransaction extends Transaction {
                "provider='" + provider + '\'' +
                ", phoneNumber='" + phoneNumber + '\'' +
                ", amount=" + getAmount() +
-               ", date=" + getTransactionDate() +
+               ", date=" + getDate() +
                '}';
     }
 }

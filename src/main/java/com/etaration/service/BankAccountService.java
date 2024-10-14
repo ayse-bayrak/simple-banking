@@ -2,10 +2,6 @@ package com.etaration.service;
 
 import com.etaration.dto.AccountResponse;
 import com.etaration.entity.BankAccount;
-import com.etaration.entity.Transaction;
-
-import java.util.List;
-import java.util.Optional;
 
 public interface BankAccountService {
 

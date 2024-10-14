@@ -1,6 +1,5 @@
 package com.etaration.repository;
 
-import com.etaration.entity.BankAccount;
 import com.etaration.entity.Transaction;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -13,5 +12,6 @@ import java.util.List;
 
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 //List<Transaction> findAllByBankAccountNumber(String bankAccountNumber);
-List<Transaction> findAllByBankAccount(BankAccount bankAccount);
+//List<Transaction> findAllByBankAccount(BankAccount bankAccount);
+List<Transaction> findAllByBankAccountNumber(String bankAccountNumber);
  }

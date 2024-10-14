@@ -1,6 +1,5 @@
 package com.etaration.entity;
 
-import com.etaration.entity.Transaction;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import lombok.Getter;

@@ -23,7 +23,7 @@ public class SimpleBankingApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        BankAccount account = new BankAccount("Ayse Gunes Bayrak", "669-7788");
+        BankAccount account = new BankAccount("Kerem Karaca", "669-7788");
         bankAccountRepository.save(account);
     }
 

@@ -11,11 +11,11 @@ import com.etaration.service.TransactionService;
 import com.etaration.util.MapperUtil;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -31,23 +31,16 @@ public class TransactionServiceImpl implements TransactionService {
         this.bankAccountService = bankAccountService;
     }
 
-    public List<TransactionDTO> getAllTransactions() {
-        log.info("getAllTransactions() first index' type is "+transactionRepository.findAll().get(0).getType());
-        return transactionRepository.findAll().stream()
-                .map(transaction-> mapperUtil.convert(transaction, new TransactionDTO()))
-                .toList();
-    }
-
     @Override
     @Transactional
-    public void postTransaction(String accountNumber, Transaction transaction) {
+    public String postTransaction(String accountNumber, Transaction transaction) {
         log.info("postTransaction process is starting");
         BankAccount account = bankAccountService.findByAccountNumber(accountNumber);
-
-        //account.postTransaction(transaction);
-        bankAccountService.save(account);
-
-        transaction.setTransactionDate(LocalDateTime.now()); // Set the current date and time
+        String approvalCode = UUID.randomUUID().toString();
+        transaction.setDate(LocalDateTime.now()); // Set the current date and time
+        transaction.setBankAccountNumber(accountNumber);
+        transaction.setApprovalCode(approvalCode);
+        transaction.setStatus("OK");
         double balance = account.getBalance();
         if (transaction instanceof DepositTransaction) {
             balance += transaction.getAmount();
@@ -58,15 +51,23 @@ public class TransactionServiceImpl implements TransactionService {
                 throw new IllegalArgumentException("Insufficient funds for withdrawal");
             }
         }
+        account.setBalance(balance);
         transactionRepository.save(transaction);
+        bankAccountService.save(account);
+        return approvalCode;
     }
 
     @Override
-    public List<TransactionDTO> getTransactionsByBankAccount(BankAccount bankAccount) {
-        log.info("all transaction"+ transactionRepository.findAllByBankAccount(bankAccount));
-        return transactionRepository.findAllByBankAccount(bankAccount)
+    public List<TransactionDTO> getTransactionsByAccountNumber(String accountNumber) {
+        log.info("all transaction "+ transactionRepository.findAllByBankAccountNumber(accountNumber));
+        return transactionRepository.findAllByBankAccountNumber(accountNumber)
                 .stream().map(transaction -> mapperUtil.convert(transaction, new TransactionDTO()))
                 .toList();
 
+    }
+
+    @Override
+    public void save(Transaction transaction) {
+        transactionRepository.save(transaction);
     }
 }

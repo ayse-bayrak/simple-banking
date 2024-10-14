@@ -4,11 +4,17 @@ import com.etaration.dto.AccountResponse;
 import com.etaration.dto.TransactionDTO;
 import com.etaration.dto.TransactionRequest;
 import com.etaration.dto.wrapper.ResponseWrapper;
+import com.etaration.entity.DepositTransaction;
+import com.etaration.entity.WithdrawalTransaction;
 import com.etaration.service.BankAccountService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.etaration.service.TransactionService;
+import com.etaration.util.MapperUtil;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/account/v1")
@@ -16,9 +22,13 @@ public class BankAccountController {
 
 
     private final BankAccountService bankAccountService;
+    private final TransactionService transactionService;
+    private final MapperUtil mapperUtil;
 
-    public BankAccountController(BankAccountService bankAccountService) {
+    public BankAccountController(BankAccountService bankAccountService, @Lazy TransactionService transactionService, MapperUtil mapperUtil) {
         this.bankAccountService = bankAccountService;
+        this.transactionService = transactionService;
+        this.mapperUtil = mapperUtil;
     }
 
     @PostMapping("/credit/{accountNumber}")
@@ -26,9 +36,14 @@ public class BankAccountController {
       String approvalCode = bankAccountService.credit(accountNumber, request.getAmount());
 
         TransactionDTO transactionDTO = TransactionDTO.builder()
+                .date(LocalDateTime.now())
+                .amount(request.getAmount())
                 .status("OK")
+                .type("DepositTransaction")
                 .approvalCode(approvalCode)
                 .build();
+        DepositTransaction depositTransaction = mapperUtil.convert(transactionDTO, new DepositTransaction());
+        transactionService.save(depositTransaction);
 
         ResponseWrapper responseWrapper = ResponseWrapper.builder()
                 .success(true)
@@ -45,9 +60,15 @@ public class BankAccountController {
         String approvalCode = bankAccountService.debit(accountNumber, request.getAmount());
 
         TransactionDTO transactionDTO = TransactionDTO.builder()
+                .date(LocalDateTime.now())
+                .amount(request.getAmount())
                 .status("OK")
+                .type("WithdrawalTransaction")
                 .approvalCode(approvalCode)
                 .build();
+
+        WithdrawalTransaction withdrawalTransaction = mapperUtil.convert(transactionDTO, new WithdrawalTransaction());
+        transactionService.save(withdrawalTransaction);
 
         ResponseWrapper responseWrapper = ResponseWrapper.builder()
                 .success(true)

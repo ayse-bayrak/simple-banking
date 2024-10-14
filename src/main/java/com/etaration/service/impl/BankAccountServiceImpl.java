@@ -36,12 +36,11 @@ public class BankAccountServiceImpl implements BankAccountService {
 
         // Create a DepositTransaction and post it to the account
         DepositTransaction depositTransaction = new DepositTransaction(amount);
-       transactionService.postTransaction(accountNumber, depositTransaction);
 
         // Save the updated account
         bankAccountRepository.save(account);
 
-        return UUID.randomUUID().toString();
+        return transactionService.postTransaction(accountNumber, depositTransaction); // return approvalCode
     }
 
     @Transactional
@@ -70,7 +69,7 @@ public class BankAccountServiceImpl implements BankAccountService {
         BankAccount account = bankAccountRepository.findByAccountNumber(accountNumber)
                 .orElseThrow(() -> new IllegalArgumentException("Account not found"));
 
-        List<TransactionDTO> transactionDTOS = transactionService.getTransactionsByBankAccount(account);
+        List<TransactionDTO> transactionDTOS = transactionService.getTransactionsByAccountNumber(accountNumber);
 
         return AccountResponse.builder()
                 .accountNumber(account.getAccountNumber())
