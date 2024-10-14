@@ -56,8 +56,6 @@ Before you begin, ensure you have met the following requirements:
 
 ## 5. General Guidelines
 
-- **Single Responsibility Principle:**
-    - A class should have only one reason to change.
 - **Avoid Magic Numbers:**
     - Instead of hard coded numbers, use named constants.
 - **Null Safety:**
@@ -67,6 +65,30 @@ Before you begin, ensure you have met the following requirements:
 - **Unit Testing:**
     - Always write unit tests for your service layers. Aim for a high code coverage.
 
+## 6. SOLID Principles
+     
+This application follows the SOLID design principles, which promote best practices in object-oriented programming and enhance code maintainability, flexibility, and readability.
+
+- **Single Responsibility Principle (SRP):** 
+- Each class in the application has a single responsibility. For example, the BankAccount class manages account details, while the TransactionService handles transaction operations. 
+- This separation ensures that changes in one area do not affect others.
+
+- **Open/Closed Principle (OCP):** 
+- The application is designed to be open for extension but closed for modification. New transaction types can be added through inheritance without altering existing code. 
+- This allows the application to grow without impacting its stability.
+
+- **Liskov Substitution Principle (LSP):**
+- Subtypes can be used interchangeably with their base types without affecting the functionality of the application. 
+- For instance, both DepositTransaction and WithdrawalTransaction can be treated as Transaction types, ensuring consistency and reliability.
+
+- **Interface Segregation Principle (ISP):**
+- Interfaces are designed to be client-specific, allowing classes to implement only the methods they need. 
+- This reduces unnecessary dependencies and promotes a cleaner architecture. For example, separate interfaces for deposit and withdrawal functionalities enhance code clarity.
+
+- **Dependency Inversion Principle (DIP):**
+- The application relies on abstractions rather than concrete implementations. This allows for easier testing and flexibility, as different implementations can be substituted without modifying the service code.
+
+By adhering to these SOLID principles, the application is more robust, easier to maintain, and adaptable to future changes.
 ## 6. Dependencies
 
 - Keep your dependencies up to date.
